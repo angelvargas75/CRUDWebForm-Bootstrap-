@@ -20,20 +20,22 @@
             </div>
         </div>
         <br />
-        <div class="container row">
-            <div class="table small">
-                <asp:GridView ID="dgvListado" runat="server" class="table table-borderless table-hover">
-                    <Columns>
-                        <asp:TemplateField HeaderText="Opciones del administrador">
-                            <ItemTemplate>
-                                <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn form-control-sm btn-info" OnClick="btnBuscar_Click" />
-                                <asp:Button ID="btnActualizar" runat="server" Text="Actualizar" CssClass="btn form-control-sm btn-warning" OnClick="btnActualizar_Click" />
-                                <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn form-control-sm btn-danger" OnClick="btnEliminar_Click" />
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                </asp:GridView>
-            </div>
-        </div>
+
+       <%-- <div class="container row">--%>
+                <div class="table small" style="padding: 20px;">
+                    <asp:GridView ID="dgvListado" runat="server" class="table table-borderless table-hover">
+                        <Columns>
+                            <asp:TemplateField HeaderText="Opciones del administrador">
+                                <ItemTemplate>
+                                    <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn form-control-sm btn-info" OnClick="btnBuscar_Click" />
+                                    <asp:Button ID="btnActualizar" runat="server" Text="Actualizar" CssClass="btn form-control-sm btn-warning" OnClick="btnActualizar_Click" />
+                                    <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn form-control-sm btn-danger" OnClick="btnEliminar_Click" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                </div>
+  <%--      </div>--%>
     </form>
 </asp:Content>
+
