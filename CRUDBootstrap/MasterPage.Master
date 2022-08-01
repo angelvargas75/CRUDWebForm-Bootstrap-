@@ -16,7 +16,7 @@
 <body>
     <nav class="navbar bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand">DB_Chinook</a>
+            <a class="navbar-brand">WebForm-Bootstrap</a>
         </div>
     </nav>
 
