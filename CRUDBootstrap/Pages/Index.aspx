@@ -32,8 +32,8 @@
                 <Columns>
                     <asp:TemplateField HeaderText="Opciones del administrador">
                         <ItemTemplate>
-                            <asp:Button ID="btnActualizar" runat="server" Text="Actualizar" CssClass="btn form-control-sm btn-warning" OnClick="btnActualizar_Click" />
-                            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn form-control-sm btn-danger" OnClick="btnEliminar_Click" />
+                            <asp:Button ID="btnActualizar" runat="server" Text="Actualizar" CssClass="btn form-control-sm btn-outline-success" OnClick="btnActualizar_Click" />
+                            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn form-control-sm btn-outline-danger" OnClick="btnEliminar_Click" />
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
