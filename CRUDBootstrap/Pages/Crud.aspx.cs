@@ -10,6 +10,7 @@ namespace CRUDBootstrap.Pages
     public partial class Crud : System.Web.UI.Page
     {
         readonly SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["conexion"].ConnectionString);
+        public static string nom = "";
         public static string sID = "-1";
         public static string sOpc = "";
 
@@ -18,9 +19,10 @@ namespace CRUDBootstrap.Pages
             // Obtener el ID
             if (!Page.IsPostBack)  // Entra cuando es un redirect
             {
-                if (Request.QueryString["id"] != null)
+                if (Request.QueryString["nom"] != null && Request.QueryString["id"] !=null)
                 {
                     sID = Request.QueryString["id"].ToString();
+                    nom = Request.QueryString["nom"].ToString();
                     CargarDatos();
                     txtDate.TextMode = TextBoxMode.DateTime;
                 }
@@ -54,10 +56,10 @@ namespace CRUDBootstrap.Pages
 
         void CargarDatos()
         {
-            con.Open();
             SqlDataAdapter da = new SqlDataAdapter("sp_read", con);
+            con.Open();
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("@Id", SqlDbType.Int).Value = sID;
+            da.SelectCommand.Parameters.Add("@Nombre", SqlDbType.VarChar).Value =nom;
             DataSet ds = new DataSet();
             ds.Clear();
             da.Fill(ds);

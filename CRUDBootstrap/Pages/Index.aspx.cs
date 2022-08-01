@@ -45,19 +45,38 @@ namespace CRUDBootstrap.Pages
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
             string id;
+            string nombre;
             Button btnConsultar = (Button)sender;
             GridViewRow selectRow = (GridViewRow)btnConsultar.NamingContainer;
             id = selectRow.Cells[1].Text;
-            Response.Redirect("~/Pages/Crud.aspx?id=" + id + "&op=U");
+            nombre = selectRow.Cells[2].Text;
+            Response.Redirect("~/Pages/Crud.aspx?id="+ id +"&nom=" + nombre + "&op=U");
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             string id;
+            string nombre;
             Button btnConsultar = (Button)sender;
             GridViewRow selectRow = (GridViewRow)btnConsultar.NamingContainer;
             id = selectRow.Cells[1].Text;
-            Response.Redirect("~/Pages/Crud.aspx?id=" + id + "&op=D");
+            nombre = selectRow.Cells[2].Text;
+            Response.Redirect("~/Pages/Crud.aspx?id=" + id + "&nom=" + nombre + "&op=D");
+        }
+
+        protected void btnBuscar_Click1(object sender, EventArgs e)
+        {
+            string filtro = txtFilter.Text;
+            SqlDataAdapter da = new SqlDataAdapter("sp_read", con);
+            con.Open();
+            da.SelectCommand.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = filtro;
+            DataSet ds = new DataSet();
+            ds.Clear();
+            da.Fill(ds);
+            dgvListado.DataSource = ds;
+            dgvListado.DataBind();
+            con.Close();
         }
     }
 }
