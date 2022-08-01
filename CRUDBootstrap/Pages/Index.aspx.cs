@@ -33,15 +33,6 @@ namespace CRUDBootstrap.Pages
             Response.Redirect("~/Pages/Crud.aspx?op=C");
         }
 
-        protected void btnBuscar_Click(object sender, EventArgs e)
-        {
-            string id;
-            Button btnConsultar = (Button)sender;
-            GridViewRow selectRow = (GridViewRow)btnConsultar.NamingContainer;
-            id = selectRow.Cells[1].Text;
-            Response.Redirect("~/Pages/Crud.aspx?id=" + id + "&op=R");
-        }
-
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
             string id;
