@@ -63,7 +63,6 @@ namespace CRUDBootstrap.Pages
             con.Open();
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
             da.SelectCommand.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = nom;
-            da.SelectCommand.Parameters.Add("@Id", SqlDbType.Int).Value = sID;
             DataSet ds = new DataSet();
             ds.Clear();
             da.Fill(ds);

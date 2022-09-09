@@ -58,10 +58,12 @@ namespace CRUDBootstrap.Pages
         protected void btnBuscar_Click1(object sender, EventArgs e)
         {
             string filtro = txtFilter.Text;
+            //int id = Convert.ToInt32(txtFilter.Text);
             SqlDataAdapter da = new SqlDataAdapter("sp_read", con);
             con.Open();
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
             da.SelectCommand.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = filtro;
+            //da.SelectCommand.Parameters.Add("@Id", SqlDbType.Int).Value = id;
             DataSet ds = new DataSet();
             ds.Clear();
             da.Fill(ds);
