@@ -33,6 +33,15 @@ namespace CRUDBootstrap.Pages
         protected global::System.Web.UI.WebControls.TextBox txtNombre;
 
         /// <summary>
+        /// rfvTextNombre control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTextNombre;
+
+        /// <summary>
         /// txtEdad control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace CRUDBootstrap.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEdad;
+
+        /// <summary>
+        /// rfvTextEdad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTextEdad;
 
         /// <summary>
         /// txtEmail control.
@@ -51,6 +69,15 @@ namespace CRUDBootstrap.Pages
         protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
+        /// rfvTextEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTextEmail;
+
+        /// <summary>
         /// txtDate control.
         /// </summary>
         /// <remarks>
@@ -58,6 +85,15 @@ namespace CRUDBootstrap.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDate;
+
+        /// <summary>
+        /// rfvTextDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTextDate;
 
         /// <summary>
         /// btnNuevo control.

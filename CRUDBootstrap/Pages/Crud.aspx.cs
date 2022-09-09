@@ -16,10 +16,13 @@ namespace CRUDBootstrap.Pages
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Habilita la validacion tradicional
+            Page.UnobtrusiveValidationMode = System.Web.UI.UnobtrusiveValidationMode.None;
+
             // Obtener el ID
             if (!Page.IsPostBack)  // Entra cuando es un redirect
             {
-                if (Request.QueryString["nom"] != null && Request.QueryString["id"] !=null)
+                if (Request.QueryString["nom"] != null && Request.QueryString["id"] != null)
                 {
                     sID = Request.QueryString["id"].ToString();
                     nom = Request.QueryString["nom"].ToString();
@@ -59,7 +62,8 @@ namespace CRUDBootstrap.Pages
             SqlDataAdapter da = new SqlDataAdapter("sp_read", con);
             con.Open();
             da.SelectCommand.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand.Parameters.Add("@Nombre", SqlDbType.VarChar).Value =nom;
+            da.SelectCommand.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = nom;
+            da.SelectCommand.Parameters.Add("@Id", SqlDbType.Int).Value = sID;
             DataSet ds = new DataSet();
             ds.Clear();
             da.Fill(ds);
@@ -75,16 +79,23 @@ namespace CRUDBootstrap.Pages
 
         protected void btnNuevo_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("sp_create", con);
-            con.Open();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = txtNombre.Text;
-            cmd.Parameters.Add("@Edad", SqlDbType.Int).Value = txtEdad.Text;
-            cmd.Parameters.Add("@Correo", SqlDbType.VarChar).Value = txtEmail.Text;
-            cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = txtDate.Text;
-            cmd.ExecuteNonQuery();
-            con.Close();
-            Response.Redirect("Index.aspx");
+            try
+            {
+                SqlCommand cmd = new SqlCommand("sp_create", con);
+                con.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = txtNombre.Text;
+                cmd.Parameters.Add("@Edad", SqlDbType.Int).Value = txtEdad.Text;
+                cmd.Parameters.Add("@Correo", SqlDbType.VarChar).Value = txtEmail.Text;
+                cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = txtDate.Text;
+                cmd.ExecuteNonQuery();
+                con.Close();
+                Response.Redirect("Index.aspx");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("ERROR: " + ex);
+            }
         }
 
         protected void btnActualizar_Click(object sender, EventArgs e)
