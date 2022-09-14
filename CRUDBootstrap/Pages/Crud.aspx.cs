@@ -2,6 +2,10 @@
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -22,22 +26,24 @@ namespace CRUDBootstrap.Pages
             // Obtener el ID
             if (!Page.IsPostBack)  // Entra cuando es un redirect
             {
-                if (Request.QueryString["nom"] != null && Request.QueryString["id"] != null)
+                sOpc = Decrypt(HttpUtility.UrlDecode(Request.QueryString["op"]));
+                if (sOpc != null && sOpc.Equals("C"))
                 {
-                    sID = Request.QueryString["id"].ToString();
-                    nom = Request.QueryString["nom"].ToString();
+                    lblTitulo.Text = "Ingresar nuevo usuario";
+                    btnNuevo.Visible = true;
+                    return;
+                }
+                sID = Decrypt(HttpUtility.UrlDecode(Request.QueryString["id"]));
+                nom = Decrypt(HttpUtility.UrlDecode(Request.QueryString["nom"]));
+                if (sID != null && nom != null)
+                {
                     CargarDatos();
                     txtDate.TextMode = TextBoxMode.DateTime;
                 }
-                if (Request.QueryString["op"] != null)
+                if (sOpc != null)
                 {
-                    sOpc = Request.QueryString["op"].ToString();
                     switch (sOpc)
                     {
-                        case "C":
-                            lblTitulo.Text = "Ingresar nuevo usuario";
-                            btnNuevo.Visible = true;
-                            break;
                         case "R":
                             lblTitulo.Text = "Consulta de usuario";
                             break;
@@ -89,7 +95,7 @@ namespace CRUDBootstrap.Pages
                 cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = txtDate.Text;
                 cmd.ExecuteNonQuery();
                 con.Close();
-                Response.Redirect("Index.aspx");
+                Response.Redirect("Index.aspx", false);
             }
             catch (Exception ex)
             {
@@ -99,33 +105,76 @@ namespace CRUDBootstrap.Pages
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("sp_update", con);
-            con.Open();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = sID;
-            cmd.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = txtNombre.Text;
-            cmd.Parameters.Add("@Edad", SqlDbType.Int).Value = txtEdad.Text;
-            cmd.Parameters.Add("@Correo", SqlDbType.VarChar).Value = txtEmail.Text;
-            cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = txtDate.Text;
-            cmd.ExecuteNonQuery();
-            con.Close();
-            Response.Redirect("Index.aspx");
+            try
+            {
+                SqlCommand cmd = new SqlCommand("sp_update", con);
+                con.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = sID;
+                cmd.Parameters.Add("@Nombre", SqlDbType.VarChar).Value = txtNombre.Text;
+                cmd.Parameters.Add("@Edad", SqlDbType.Int).Value = txtEdad.Text;
+                cmd.Parameters.Add("@Correo", SqlDbType.VarChar).Value = txtEmail.Text;
+                cmd.Parameters.Add("@Fecha", SqlDbType.Date).Value = txtDate.Text;
+                cmd.ExecuteNonQuery();
+                con.Close();
+                Response.Redirect("Index.aspx", false);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("ERROR: " + ex);
+            }
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("sp_delete", con);
-            con.Open();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@Id", SqlDbType.Int).Value = sID;
-            cmd.ExecuteNonQuery();
-            con.Close();
-            Response.Redirect("Index.aspx");
+            try
+            {
+                SqlCommand cmd = new SqlCommand("sp_delete", con);
+                con.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Id", SqlDbType.Int).Value = sID;
+                cmd.ExecuteNonQuery();
+                con.Close();
+                Response.Redirect("Index.aspx", false);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("ERROR: " + ex);
+            }
         }
 
         protected void btnVolver_Click(object sender, EventArgs e)
         {
             Response.Redirect("Index.aspx");
+        }
+
+
+
+        // Metodo para desencriptar parametros QueryString
+        private string Decrypt(string cipherText)
+        {
+            string encryptionKey = "MAKV2SPBNI99212";
+            cipherText = cipherText.Replace(" ", "+");
+            byte[] cipherBytes = Convert.FromBase64String(cipherText);
+
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(encryptionKey, new byte[] {
+                    0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76
+                });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(cipherBytes, 0, cipherBytes.Length);
+                        cs.Close();
+                    }
+                    cipherText = Encoding.Unicode.GetString(ms.ToArray());
+                }
+            }
+            return cipherText;
         }
     }
 }
